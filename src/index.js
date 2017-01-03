@@ -50,3 +50,55 @@ const TodoList = combineReducers({
 });
 const store = createStore(TodoList);
 
+
+
+let todoId = 0;
+
+class App extends Component {
+  handleToggleClick(todo){
+     store.dispatch({
+              type:"TOGGLE",
+              id:todo.id
+            });
+  }
+  handleItems(e){
+
+    if(e.keyCode == 13||e.type == "click"){
+      store.dispatch({
+          type:"ADD-TODO",
+          text:this.input.value,
+          id:todoId++
+        });
+        this.input.value="";
+    }
+  }
+  render() {
+    const {Todos,VisibilityFilter} = this.props;
+    const visible = getVisiblity(Todos,VisibilityFilter);
+    return (
+      <div>
+      <input ref={(node)=>{
+        this.input = node
+      }} onKeyDown={this.handleItems.bind(this)} />
+      <button onClick={this.handleItems.bind(this)}>
+      Add
+      </button>
+      <ul>
+          {visible.map((todo)=>{return (<li key={todo.id} onClick={this.handleToggleClick.bind(this,todo)}  style={{textDecoration:todo.completed?"line-through":"none"}}>{todo.text}</li>)})}  
+      </ul>
+       
+      </div>
+    );
+  }
+}
+
+const render = ()=>{
+  ReactDOM.render(
+  <App {...store.getState()}/>,
+  document.getElementById('root')
+ );
+};
+
+store.subscribe(render);
+render();
+
