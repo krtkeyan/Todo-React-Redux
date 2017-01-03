@@ -50,6 +50,31 @@ const TodoList = combineReducers({
 });
 const store = createStore(TodoList);
 
+const getVisiblity = (Todos,filter) => {
+  switch (filter){
+    case "SHOW_ALL": return Todos;
+    case "SHOW_ACTIVE": return Todos.filter(t=>!t.completed);
+    case "SHOW_COMPLETED": return Todos.filter(t=>t.completed);
+  }
+};
+
+class Filter extends Component{
+
+  render(){
+    
+  if(this.props.currentFilter==this.props.filter){
+    return <span>{this.props.children}</span>
+  } 
+  return (<a href="#" onClick={e=>{
+    e.preventDefault();
+    store.dispatch({
+      type:"SET_VISIBILITY",
+      filter:this.props.filter
+    });
+  }} 
+  >{this.props.children}</a>);
+  }
+}
 
 
 let todoId = 0;
@@ -83,6 +108,12 @@ class App extends Component {
       <button onClick={this.handleItems.bind(this)}>
       Add
       </button>
+      <p>Show:
+       {" "}<Filter filter="SHOW_ALL" currentFilter={VisibilityFilter}>All</Filter>
+      {" "}<Filter filter="SHOW_COMPLETED" currentFilter={VisibilityFilter}>Completed</Filter>
+      {" "}<Filter filter="SHOW_ACTIVE" currentFilter={VisibilityFilter}>Active</Filter>
+      
+      </p>
       <ul>
           {visible.map((todo)=>{return (<li key={todo.id} onClick={this.handleToggleClick.bind(this,todo)}  style={{textDecoration:todo.completed?"line-through":"none"}}>{todo.text}</li>)})}  
       </ul>
