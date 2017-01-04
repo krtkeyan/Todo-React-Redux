@@ -73,7 +73,7 @@ const TodoList = ({todos,onTodoClick}) => (
      </ul>
 );
 
-const Filter = ({filter,currentFilter,children}) => 
+const Filter = ({filter,currentFilter,children,onClick}) => 
   {
    if(filter == currentFilter){
     return <span>{children}</span>
@@ -81,15 +81,21 @@ const Filter = ({filter,currentFilter,children}) =>
   return (
   <a href="#" onClick={e=>{
     e.preventDefault();
-    store.dispatch({
-      type:"SET_VISIBILITY",
-      filter
-    })
+    onClick(filter);
   }} 
   >{children}
   </a>
   );
 };
+
+const ToggleFilter = ({visibilityFilter,onFilterClick}) => {
+ return ( <p>Show:
+      {" "}<Filter filter="SHOW_ALL" currentFilter={visibilityFilter} onClick={onFilterClick}>All</Filter>
+      {" "}<Filter filter="SHOW_COMPLETED" currentFilter={visibilityFilter} onClick={onFilterClick}>Completed</Filter>
+      {" "}<Filter filter="SHOW_ACTIVE" currentFilter={visibilityFilter} onClick={onFilterClick}>Active</Filter>
+      </p>
+)
+}
 
 const AddTodo = ({onAdd}) => {
   let input;
@@ -115,14 +121,9 @@ const AddTodo = ({onAdd}) => {
 
 let todoId = 0;
 
-class App extends Component {
+const App = ({todos,visibilityFilter}) => {
  
-  
-  render() {
-    const {todos,visibilityFilter} = this.props;
-    const visible = getVisiblity(todos,visibilityFilter);
-
-    return (
+   return (
       <div>
       <AddTodo onAdd={(text)=>{
         store.dispatch({
@@ -131,14 +132,21 @@ class App extends Component {
           text      
         });
       }}/>
-      
-      <p>Show:
-       {" "}<Filter filter="SHOW_ALL" currentFilter={visibilityFilter}>All</Filter>
-      {" "}<Filter filter="SHOW_COMPLETED" currentFilter={visibilityFilter}>Completed</Filter>
-      {" "}<Filter filter="SHOW_ACTIVE" currentFilter={visibilityFilter}>Active</Filter>
-      </p>
+          
+      <ToggleFilter visibilityFilter={visibilityFilter} onFilterClick={(filter)=>{
+        store.dispatch({
+          type:"SET_VISIBILITY",
+          filter
+        })
+      }
+      }/>
+     
 
-      <TodoList todos={visible} onTodoClick={id=>{   
+      <TodoList 
+        todos={
+        getVisiblity(todos,visibilityFilter)
+        } 
+        onTodoClick={id=>{   
         store.dispatch({
               type:"TOGGLE",
               id
@@ -149,8 +157,8 @@ class App extends Component {
       
       </div>
     );
-  }
 }
+
 
 const render = ()=>{
   ReactDOM.render(
@@ -162,3 +170,4 @@ const render = ()=>{
 store.subscribe(render);
 render();
 
+  
