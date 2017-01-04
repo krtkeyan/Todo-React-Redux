@@ -1,7 +1,7 @@
 import TodoList from "../Presentation/TodoList";
 import getVisiblity from "../../Reducers/getVisibility";
 import {connect} from "react-redux";
-import toggle from "../../actions/toggle"
+import {toggle} from "../../actions"
 
 const mapStatetoProps = (state) => {
     return {

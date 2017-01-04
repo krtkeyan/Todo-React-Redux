@@ -1,6 +1,6 @@
 import Link from "../Presentation/Link";
 import {connect} from "react-redux";
-import setVisibility from "../../actions/setVisibility"
+import {setVisibility} from "../../actions"
 
 const mapStatetoProps = (state,ownProps) =>{
   return {
