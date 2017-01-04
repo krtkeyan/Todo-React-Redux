@@ -1,9 +1,10 @@
 import TodoList from "../Presentation/TodoList";
 import getVisiblity from "../../Reducers/getVisibility";
 import {connect} from "react-redux";
+import toggle from "../../actions/toggle"
 
 const mapStatetoProps = (state) => {
-    return{
+    return {
        todos:getVisiblity(state.todos,state.visibilityFilter)
     }
 };
@@ -11,10 +12,7 @@ const mapStatetoProps = (state) => {
 const mapDispatchtoProps = (dispatch) => {
     return {
         onTodoClick:id=>{   
-        dispatch({
-              type:"TOGGLE",
-              id
-        })
+        dispatch(toggle(id))
         }
     }
 }

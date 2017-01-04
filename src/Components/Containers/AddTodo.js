@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import addTodo from '../../actions/addTodo';
 
-let todoId = 0;
 let AddTodo = ({dispatch}) => {
   let input;
   return (
@@ -10,21 +10,14 @@ let AddTodo = ({dispatch}) => {
       node=>{
         input = node
       }} onKeyDown={(e)=>{
-        if(e.keyCode===13){
-          dispatch({
-          type:"ADD-TODO",
-          id:todoId++,
-          text:input.value      
-         });
+        if(e.keyCode===13&&input.value!==""){
+          dispatch(addTodo(input.value));
          input.value="";
         }
       }}/>
       <button onClick={()=>{
-         dispatch({
-          type:"ADD-TODO",
-          id:todoId++,
-          text:input.value     
-        });
+        if(input.value!=="")
+         dispatch(addTodo(input.value));
         input.value="";
       }}>
       Add
