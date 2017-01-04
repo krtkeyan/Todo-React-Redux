@@ -1,41 +1,27 @@
 import TodoList from "../Presentation/TodoList";
 import getVisiblity from "../../Reducers/getVisibility";
-import React, { Component } from 'react';
-class TodoApp extends Component{
- 
+import {connect} from "react-redux";
 
-  componentDidMount(){
-    const {store} = this.context;
-    this.unsubscribe = store.subscribe(()=>{
-      this.forceUpdate();
-    });
-  }
-
-  componentWillUnMount(){
-    this.unsubscribe();
-  }
-
-  render(){
-    const {store} = this.context;
-    const state = store.getState();
-    return (
-      <TodoList 
-        todos={
-        getVisiblity(state.todos,state.visibilityFilter)
-        } 
-        onTodoClick={id=>{   
-        store.dispatch({
-              type:"TOGGLE",
-              id
-            });
-          }
-        }
-      />)
-  }
+const mapStatetoProps = (state) => {
+    return{
+       todos:getVisiblity(state.todos,state.visibilityFilter)
+    }
 };
 
-TodoApp.contextTypes = {
-  store: React.PropTypes.object
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        onTodoClick:id=>{   
+        dispatch({
+              type:"TOGGLE",
+              id
+        })
+        }
+    }
 }
+
+const TodoApp =connect(
+  mapStatetoProps,
+  mapDispatchtoProps
+)(TodoList);
 
 export default TodoApp;

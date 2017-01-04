@@ -1,6 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
 let todoId = 0;
-const AddTodo = (props,{store}) => {
+let AddTodo = ({dispatch}) => {
   let input;
   return (
    <div>
@@ -9,7 +11,7 @@ const AddTodo = (props,{store}) => {
         input = node
       }} onKeyDown={(e)=>{
         if(e.keyCode===13){
-          store.dispatch({
+          dispatch({
           type:"ADD-TODO",
           id:todoId++,
           text:input.value      
@@ -18,7 +20,7 @@ const AddTodo = (props,{store}) => {
         }
       }}/>
       <button onClick={()=>{
-         store.dispatch({
+         dispatch({
           type:"ADD-TODO",
           id:todoId++,
           text:input.value     
@@ -29,8 +31,6 @@ const AddTodo = (props,{store}) => {
       </button>
   </div>)
 };
-AddTodo.contextTypes = {
-  store:React.PropTypes.object
-}
 
+AddTodo = connect()(AddTodo);
 export default AddTodo;
