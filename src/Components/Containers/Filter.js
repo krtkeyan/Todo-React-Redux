@@ -1,24 +1,17 @@
-import Link from "../Presentation/Link";
-import {connect} from "react-redux";
-import {setVisibility} from "../../actions"
+import React from 'react';
+import {Link} from 'react-router';
 
-const mapStatetoProps = (state,ownProps) =>{
-  return {
-    active:ownProps.filter === state.visibilityFilter
-  }
+const Filter = ({filter,children}) => {
+    return (
+        <Link 
+        to={filter==='all'?'':filter}
+        activeStyle={{
+            textDecoration:'none',
+            color:'black'
+        }}>
+        {children}
+        </Link>
+    )
 };
-
-const mapDispatchtoProps = (dispatch,ownProps) => {
-  return {
-     onClick:()=>{
-        dispatch(setVisibility(ownProps.filter))
-      }
-  }
-};
-
-const Filter = connect(
-  mapStatetoProps,
-  mapDispatchtoProps
-)(Link);
 
 export default Filter;

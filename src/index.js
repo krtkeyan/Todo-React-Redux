@@ -1,14 +1,10 @@
 import ReactDOM from 'react-dom';
-import {createStore} from "redux";
-import {Provider} from "react-redux";
-import App from "./Components/App";
-import todoList from "./Reducers/todoList";
+import Root from './Components/Root'
 import React from 'react';
-
+import {config} from './actions/configStore'
+const store = config()
 ReactDOM.render(
-<Provider store={createStore(todoList)}>
-  <App />
-</Provider>,
+<Root store={store} />,
 document.getElementById('root')
 );
 

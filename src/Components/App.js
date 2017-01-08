@@ -6,7 +6,7 @@ import TodoApp from "./Containers/TodoApp";
 const App = () => (
       <div>
       <AddTodo />
-      <ToggleFilter />
+      <ToggleFilter/>
       <TodoApp />     
       </div>
 );

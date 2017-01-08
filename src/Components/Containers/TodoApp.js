@@ -1,25 +1,17 @@
 import TodoList from "../Presentation/TodoList";
-import getVisiblity from "../../Reducers/getVisibility";
+import {getVisiblity} from "../../Reducers/todoList";
 import {connect} from "react-redux";
 import {toggle} from "../../actions"
-
-const mapStatetoProps = (state) => {
+import {withRouter} from 'react-router'
+const mapStatetoProps = (state,{params}) => {
     return {
-       todos:getVisiblity(state.todos,state.visibilityFilter)
+       todos:getVisiblity(state,params.filter||'all')
     }
 };
 
-const mapDispatchtoProps = (dispatch) => {
-    return {
-        onTodoClick:id=>{   
-        dispatch(toggle(id))
-        }
-    }
-}
-
-const TodoApp =connect(
+const TodoApp =withRouter(connect(
   mapStatetoProps,
-  mapDispatchtoProps
-)(TodoList);
+  {onTodoClick:toggle}
+)(TodoList));
 
 export default TodoApp;

@@ -4,9 +4,9 @@ import React from 'react';
 const ToggleFilter = () => {
  return ( 
      <p>Show:
-      {" "}<Filter filter="SHOW_ALL" >All</Filter>
-      {" "}<Filter filter="SHOW_COMPLETED" >Completed</Filter>
-      {" "}<Filter filter="SHOW_ACTIVE" >Active</Filter>
+      {" "}<Filter filter="all" >All</Filter>
+      {" "}<Filter filter="completed" >Completed</Filter>
+      {" "}<Filter filter="active" >Active</Filter>
       </p>
 )
 }
