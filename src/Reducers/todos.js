@@ -1,35 +1,59 @@
-import todo from "./todo";
 import {combineReducers} from 'redux'
 
 const byId = (state={},action) => {
     switch (action.type) {
-        case "ADD-TODO":
-        case "TOGGLE":
-            return Object.assign({},state,{[action.id]:todo(state[action.id],action)})
+        case "RECEIVE-TODOS":
+            const nextState = {...state};
+            action.response.forEach(todo=>{
+                nextState[todo.id]=todo;
+            })
+            return nextState;
         default: return state;
 }
 }
 
 const allIds = (state=[],action) => {
+    if(action.filter !== 'all'){
+        return state;
+    }
     switch (action.type){
-        case "ADD-TODO":
-            return [...state,action.id]
+        case "RECEIVE-TODOS":
+            return action.response.map(todo => todo.id);
         default:
             return state
     }
 }
-const todos = combineReducers({byId,allIds});
+const activeIds = (state=[],action) => {
+    if(action.filter !== 'active'){
+        return state;
+    }
+    switch (action.type){
+        case "RECEIVE-TODOS":
+            return action.response.map(todo => todo.id);
+        default:
+            return state
+    }
+}
+const completedIds = (state=[],action) => {
+    if(action.filter !== 'completed'){
+        return state;
+    }
+    switch (action.type){
+        case "RECEIVE-TODOS":
+            return action.response.map(todo => todo.id);
+        default:
+            return state
+    }
+}
+const idsbyFilter = combineReducers({
+    all:allIds,
+    active:activeIds,
+    completed:completedIds
+})
+const todos = combineReducers({byId,idsbyFilter});
 export default todos;
 
-const getAllTodo = (state) =>
-     state.allIds.map(id=>state.byId[id]);
-
 export const getVisiblity = (state,filter) => {
-  const allTodo = getAllTodo(state);
-  switch (filter){
-    case "all": return allTodo;
-    case "active": return allTodo.filter(t=>!t.completed);
-    case "completed": return allTodo.filter(t=>t.completed);
-    default : throw new Error(`Unknown Filter ${filter}`)
-  }
+    const ids = state.idsbyFilter[filter];;
+    return ids.map(id=>state.byId[id]);
 }

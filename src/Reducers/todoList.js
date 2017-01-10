@@ -3,7 +3,6 @@ import {combineReducers} from "redux";
 
 const todoList = combineReducers({
     todos,
-   
 });
 
 export default todoList;
