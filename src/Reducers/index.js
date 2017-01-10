@@ -15,3 +15,8 @@ export const getVisiblity = (state,filter) => {
     const ids = fromList.getByIds(state.listByFilter[filter]);
     return ids.map(id=> fromByIds.getTodos(state.byId,id));
 }
+
+export const getFetching = (state,filter) => {
+    
+    return fromList.getFetching(state.listByFilter[filter])
+}

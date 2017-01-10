@@ -1,5 +1,7 @@
-const  createListByFilter = (filter) => {
-    return (state=[],action) => {
+import {combineReducers} from 'redux';
+
+const createListByFilter = (filter) => {
+    const id = (state=[],action) => {
          if(action.filter !== filter){
         return state;
     }
@@ -10,8 +12,29 @@ const  createListByFilter = (filter) => {
             return state
     }
     }
+    const isFetching = (state = false,action) => {
+        if( action.filter !== filter ) {
+            return state;
+        }
+        switch(action.type){
+            case 'REQUEST-TODOS':
+                return true;
+            case 'RECEIVE-TODOS':
+                return false;
+            default:
+                return state;
+        }
+    }
+    return combineReducers({
+        id,
+        isFetching
+    })
 }
 
 export default createListByFilter;
 
-export const getByIds = (state) => state;
+export const getByIds = (state) => state.id;
+
+export const getFetching = (state) =>{
+     return state.isFetching
+    };   

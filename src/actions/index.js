@@ -6,6 +6,10 @@ export const addTodo = (text) => ({
           text
 });
 
+export const requestTodos = (filter) => ({
+    type: "REQUEST-TODOS",
+    filter
+})
 const receiveTodos = (filter,response)=>({
     type:"RECEIVE-TODOS",
     filter,
